@@ -49,7 +49,7 @@
   <PropertyGroup>
     <Antlr4BuildTaskLocation Condition="'$(Antlr4BuildTaskPath)'==''">$(MSBuildBinPath)</Antlr4BuildTaskLocation>
     <Antlr4BuildTaskLocation Condition="'$(Antlr4BuildTaskPath)'!=''">$(Antlr4BuildTaskPath)</Antlr4BuildTaskLocation>
-    <Antlr4ToolLocation Condition="'$(Antlr4ToolPath)'==''">$(MSBuildBinPath)\Antlr4\antlr4-csharp-4.4.1-SNAPSHOT-complete.jar</Antlr4ToolLocation>
+    <Antlr4ToolLocation Condition="'$(Antlr4ToolPath)'==''">$(MSBuildBinPath)\Antlr4\antlr4-csharp-4.3-complete.jar</Antlr4ToolLocation>
     <Antlr4ToolLocation Condition="'$(Antlr4ToolPath)'!=''">$(Antlr4ToolPath)</Antlr4ToolLocation>
 
     <Antlr4JavaVendor Condition="'$(Antlr4JavaVendor)'==''">JavaSoft</Antlr4JavaVendor>
@@ -106,7 +106,7 @@
 
   <PropertyGroup>
     <!-- Add grammar compilation to the CoreCompileDependsOn so that the IDE inproc compilers (particularly VB)
-         can "see" the generated source files. -->
+	 can "see" the generated source files. -->
     <CoreCompileDependsOn Condition="'$(BuildingInsideVisualStudio)' == 'true' ">
       Antlr4DesignTimeGrammarCompilation;
       $(CoreCompileDependsOn)
@@ -116,15 +116,15 @@
   <Target Name="Antlr4DesignTimeGrammarCompilation">
     <!-- Only if we are not actually performing a compile i.e. we are in design mode -->
     <CallTarget Condition="'$(BuildingProject)' != 'true'"
-                Targets="Antlr4Compile" />
+		Targets="Antlr4Compile" />
   </Target>
 
   <Target Name="Antlr4Compile"
-          DependsOnTargets="$(Antlr4CompileDependsOn)"
-          Condition="'@(Antlr4)' != ''"
-          Inputs="@(Antlr4);@(Antlr4Tokens);@(Antlr4AbstractGrammar)"
-          Outputs="@(Antlr4OutputCodeFilesList);
-                  $(IntermediateOutputPath)$(Antlr4GenCodeFileNames);">
+	  DependsOnTargets="$(Antlr4CompileDependsOn)"
+	  Condition="'@(Antlr4)' != ''"
+	  Inputs="@(Antlr4);@(Antlr4Tokens);@(Antlr4AbstractGrammar)"
+	  Outputs="@(Antlr4OutputCodeFilesList);
+		  $(IntermediateOutputPath)$(Antlr4GenCodeFileNames);">
 
     <ItemGroup>
       <Antlr4GeneratedCodeFiles Remove="@(Antlr4GeneratedCodeFiles)" />
@@ -166,8 +166,8 @@
   </Target>
 
   <Target Name="Antlr4CompileAddFilesGenerated"
-          DependsOnTargets="$(Antlr4CompileAddFilesGeneratedDependsOn)"
-          Condition="'@(Antlr4)' != ''">
+	  DependsOnTargets="$(Antlr4CompileAddFilesGeneratedDependsOn)"
+	  Condition="'@(Antlr4)' != ''">
 
     <ItemGroup>
       <Antlr4GeneratedCodeFiles Condition="'@(Antlr4GeneratedCodeFiles)' == ''" Include="@(Antlr4OutputCodeFilesList)" />
@@ -175,7 +175,7 @@
 
     <ItemGroup>
       <FileWrites Include="@(Antlr4GeneratedCodeFiles);
-                           $(IntermediateOutputPath)$(Antlr4GenCodeFileNames);" />
+			   $(IntermediateOutputPath)$(Antlr4GenCodeFileNames);" />
     </ItemGroup>
 
     <ItemGroup>

@@ -11,7 +11,7 @@ param (
 
 # build the solutions
 $SolutionPath = "..\Runtime\CSharp\Antlr4.sln"
-$CF35SolutionPath = "..\Runtime\CSharp\Antlr4.VS2008.sln"
+# $CF35SolutionPath = "..\Runtime\CSharp\Antlr4.VS2008.sln"
 
 # make sure the script was run from the expected path
 if (!(Test-Path $SolutionPath)) {
@@ -54,9 +54,10 @@ If (-not $Java6Home -and (Test-Path $Java6RegKey)) {
 }
 
 # this is configured here for path checking, but also in the .props and .targets files
-[xml]$pom = Get-Content "..\tool\pom.xml"
-$CSharpToolVersionNodeInfo = Select-Xml "/mvn:project/mvn:version" -Namespace @{mvn='http://maven.apache.org/POM/4.0.0'} $pom
-$CSharpToolVersion = $CSharpToolVersionNodeInfo.Node.InnerText.trim()
+# [xml]$pom = Get-Content "..\tool\pom.xml"
+# $CSharpToolVersionNodeInfo = Select-Xml "/mvn:project/mvn:version" -Namespace @{mvn='http://maven.apache.org/POM/4.0.0'} $pom
+# $CSharpToolVersion = $CSharpToolVersionNodeInfo.Node.InnerText.trim()
+$CSharpToolVersion = '4.3'
 
 $nuget = '..\runtime\CSharp\.nuget\NuGet.exe'
 
@@ -71,14 +72,14 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # build the compact framework project
-$msbuild = "$env:windir\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
-
-&$nuget 'restore' $CF35SolutionPath
-&$msbuild '/nologo' '/m' '/nr:false' '/t:rebuild' "/p:Configuration=$BuildConfig" "/p:KeyConfiguration=$KeyConfiguration" $CF35SolutionPath
-if ($LASTEXITCODE -ne 0) {
-	$host.ui.WriteErrorLine('.NET 3.5 Compact Framework Build failed, aborting!')
-	exit $p.ExitCode
-}
+# $msbuild = "$env:windir\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
+#
+# &$nuget 'restore' $CF35SolutionPath
+# &$msbuild '/nologo' '/m' '/nr:false' '/t:rebuild' "/p:Configuration=$BuildConfig" "/p:KeyConfiguration=$KeyConfiguration" $CF35SolutionPath
+# if ($LASTEXITCODE -ne 0) {
+# 	$host.ui.WriteErrorLine('.NET 3.5 Compact Framework Build failed, aborting!')
+# 	exit $p.ExitCode
+# }
 
 if (-not (Test-Path 'nuget')) {
 	mkdir "nuget"

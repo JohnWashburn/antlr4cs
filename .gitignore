@@ -17,9 +17,11 @@ TestResults/
 reference/.metadata/
 reference/antlr4.net/
 /runtime/CSharp/packages/
+[Bb]in/
 
 # ignore Java (Maven) build directory
 tool/target/
 
 # ignore NuGet output folders
 /build/nuget/
+
