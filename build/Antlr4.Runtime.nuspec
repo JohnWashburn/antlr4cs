@@ -39,9 +39,5 @@
     <file src="..\runtime\CSharp\Antlr4.Runtime\bin\net45\Release\Antlr4.Runtime.pdb" target="lib\net45"/>
     <file src="..\runtime\CSharp\Antlr4.Runtime\bin\net45\Release\Antlr4.Runtime.xml" target="lib\net45"/>
 
-    <!-- Source Code -->
-
-    <file exclude="..\runtime\CSharp\Antlr4.Runtime\obj\**\*.cs" src="..\runtime\CSharp\Antlr4.Runtime\**\*.cs" target="src"/>
-    <file src="..\runtime\CSharp\Antlr4.Runtime\**\Release\*Lexer.cs" target="src"/>
   </files>
 </package>
