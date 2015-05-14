@@ -13,7 +13,7 @@ mkdir ".\Nuget"
 
 NuGet Update -self
 NuGet Pack Antlr4.nuspec /OutputDirectory "./Nuget"
-copy ".\Nuget\Antlr4.*.nupkg" "\\uva\nuget\*" /y
+copy ".\Nuget\Antlr4.*.nupkg" "C:\NugetPackages\*" /y
 
 :: the single exit point for this script
 :ExecutionComplete

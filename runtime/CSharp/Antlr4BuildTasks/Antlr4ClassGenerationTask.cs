@@ -26,6 +26,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using System.IO;
+
 namespace Antlr4.Build.Tasks
 {
     using System;
@@ -246,7 +248,7 @@ namespace Antlr4.Build.Tasks
 
         private void ProcessExceptionAsBuildMessage(Exception exception)
         {
-            ProcessBuildMessage(new BuildMessage(exception.Message));
+            ProcessBuildMessage(new BuildMessage(exception.ToString()));
         }
 
         private void ProcessBuildMessage(BuildMessage message)
@@ -325,7 +327,9 @@ namespace Antlr4.Build.Tasks
                 }
             }
 
-            wrapper.ToolPath = ToolPath;
+            var toolPathInfo = new FileInfo(ToolPath);
+            wrapper.ToolPath = toolPathInfo.FullName;
+
             wrapper.SourceCodeFiles = sourceCodeFiles;
             wrapper.TargetLanguage = TargetLanguage;
             wrapper.TargetFrameworkVersion = TargetFrameworkVersion;

@@ -161,20 +161,36 @@ namespace Antlr4.Build.Tasks
         {
             get
             {
-                string javaHome;
-                if (TryGetJavaHome(RegistryView.Default, JavaVendor, JavaInstallation, out javaHome))
+              string javaHome;
+
+              var errMsg = new StringBuilder();
+              errMsg.AppendLine("Could not locate a Java installation.");
+
+              errMsg.AppendFormat("Searching: TryGetJavaHome({0}, {1}, {2}, out javaHome)\n", RegistryView.Default, JavaVendor, JavaInstallation);
+              if (TryGetJavaHome(RegistryView.Default, JavaVendor, JavaInstallation, out javaHome))
                     return javaHome;
 
-                if (TryGetJavaHome(RegistryView.Registry64, JavaVendor, JavaInstallation, out javaHome))
+              errMsg.AppendFormat("Searching: TryGetJavaHome({0}, {1}, {2}, out javaHome)\n", RegistryView.Registry64, JavaVendor, JavaInstallation);
+              if (TryGetJavaHome(RegistryView.Registry64, JavaVendor, JavaInstallation, out javaHome))
                     return javaHome;
 
-                if (TryGetJavaHome(RegistryView.Registry32, JavaVendor, JavaInstallation, out javaHome))
+              errMsg.AppendFormat("Searching: TryGetJavaHome({0}, {1}, {2}, out javaHome)\n", RegistryView.Registry32, JavaVendor, JavaInstallation);
+              if (TryGetJavaHome(RegistryView.Registry32, JavaVendor, JavaInstallation, out javaHome))
                     return javaHome;
 
-                if (Directory.Exists(Environment.GetEnvironmentVariable("JAVA_HOME")))
-                    return Environment.GetEnvironmentVariable("JAVA_HOME");
+              var proposedJavaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+              errMsg.AppendFormat("Searching: Environment.GetEnvironmentVariable(\"JAVA_HOME\") = {0}\n", proposedJavaHome);
+              if (null != proposedJavaHome)
+              {
+                var proposeDirExists = Directory.Exists(proposedJavaHome);
+                errMsg.AppendFormat("Directory.Exists(Environment.GetEnvironmentVariable(\"JAVA_HOME\") = {0}\n", proposeDirExists);
+                if (proposeDirExists)
+                {
+                  return proposedJavaHome;
+                }
+              }
 
-                throw new NotSupportedException("Could not locate a Java installation.");
+                throw new NotSupportedException(errMsg.ToString());
             }
         }
 
@@ -210,14 +226,31 @@ namespace Antlr4.Build.Tasks
         {
             get
             {
-                string javaHome;
-                if (TryGetJavaHome(Registry.LocalMachine, JavaVendor, JavaInstallation, out javaHome))
+              string javaHome;
+
+              var errMsg = new StringBuilder();
+              errMsg.AppendLine("Could not locate a Java installation.");
+
+              errMsg.AppendFormat("Searching: TryGetJavaHome({0}, {1}, {2}, out javaHome)\n", Registry.LocalMachine, JavaVendor, JavaInstallation);
+              if (TryGetJavaHome(Registry.LocalMachine, JavaVendor, JavaInstallation, out javaHome))
                     return javaHome;
 
                 if (Directory.Exists(Environment.GetEnvironmentVariable("JAVA_HOME")))
                     return Environment.GetEnvironmentVariable("JAVA_HOME");
 
-                throw new NotSupportedException("Could not locate a Java installation.");
+                var proposedJavaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+                errMsg.AppendFormat("Searching: Environment.GetEnvironmentVariable(\"JAVA_HOME\") = {0}\n", proposedJavaHome);
+                if (null != proposedJavaHome)
+                {
+                  var proposeDirExists = Directory.Exists(proposedJavaHome);
+                  errMsg.AppendFormat("Directory.Exists(Environment.GetEnvironmentVariable(\"JAVA_HOME\") = {0}\n", proposeDirExists);
+                  if (proposeDirExists)
+                  {
+                    return proposedJavaHome;
+                  }
+                }
+
+                throw new NotSupportedException(errMsg.ToString());
             }
         }
 
@@ -335,17 +368,6 @@ namespace Antlr4.Build.Tasks
                 process.WaitForExit();
 
                 return process.ExitCode == 0;
-                //using (LoggingTraceListener traceListener = new LoggingTraceListener(_buildMessages))
-                //{
-                //    SetTraceListener(traceListener);
-                //    ProcessArgs(args.ToArray());
-                //    process();
-                //}
-
-                //_generatedCodeFiles.AddRange(GetGeneratedFiles().Where(file => LanguageSourceExtensions.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)));
-
-                //int errorCount = GetNumErrors();
-                //return errorCount == 0;
             }
             catch (Exception e)
             {
